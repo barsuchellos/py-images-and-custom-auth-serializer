@@ -14,7 +14,7 @@ class EmailUserManager(BaseUserManager):
         Create and save a user with the given email and password.
         """
         if not email:
-            raise ValueError("The given username must be set")
+            raise ValueError("The given email must be set")
 
 
         GlobalUserModel = apps.get_model(
