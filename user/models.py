@@ -6,6 +6,7 @@ from django.utils.translation import gettext_lazy
 from django.db import models
 from django.contrib import auth
 
+
 class EmailUserManager(BaseUserManager):
     use_in_migrations = True
 
@@ -16,10 +17,6 @@ class EmailUserManager(BaseUserManager):
         if not email:
             raise ValueError("The given email must be set")
 
-
-        GlobalUserModel = apps.get_model(
-            self.model._meta.app_label, self.model._meta.object_name
-        )
         email = BaseUserManager.normalize_email(email)
         user = self.model(email=email, **extra_fields)
         user.password = make_password(password)
@@ -43,7 +40,7 @@ class EmailUserManager(BaseUserManager):
         return self._create_user(email, password, **extra_fields)
 
     def with_perm(
-            self, perm, is_active=True, include_superusers=True, backend=None, obj=None
+        self, perm, is_active=True, include_superusers=True, backend=None, obj=None
     ):
         if backend is None:
             backends = auth._get_backends(return_tuples=True)
@@ -68,6 +65,7 @@ class EmailUserManager(BaseUserManager):
                 obj=obj,
             )
         return self.none()
+
 
 class User(AbstractUser):
     username = None

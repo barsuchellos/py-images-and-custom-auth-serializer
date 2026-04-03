@@ -38,12 +38,13 @@ class Actor(models.Model):
     def full_name(self):
         return f"{self.first_name} {self.last_name}"
 
+
 def create_custom_path(instance, filename):
-   _, extension = os.path.splitext(filename)
-   return os.path.join(
-       "movies/",
-       f"{slugify(instance.title)}-{uuid.uuid4()}{extension}"
-   )
+    _, extension = os.path.splitext(filename)
+    return os.path.join(
+        "movies/", f"{slugify(instance.title)}-{uuid.uuid4()}{extension}"
+    )
+
 
 class Movie(models.Model):
     title = models.CharField(max_length=255)
@@ -74,9 +75,7 @@ class MovieSession(models.Model):
 
 class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE
-    )
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.created_at)
@@ -89,9 +88,7 @@ class Ticket(models.Model):
     movie_session = models.ForeignKey(
         MovieSession, on_delete=models.CASCADE, related_name="tickets"
     )
-    order = models.ForeignKey(
-        Order, on_delete=models.CASCADE, related_name="tickets"
-    )
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="tickets")
     row = models.IntegerField()
     seat = models.IntegerField()
 
@@ -133,12 +130,8 @@ class Ticket(models.Model):
         )
 
     def __str__(self):
-        return (
-            f"{str(self.movie_session)} (row: {self.row}, seat: {self.seat})"
-        )
+        return f"{str(self.movie_session)} (row: {self.row}, seat: {self.seat})"
 
     class Meta:
         unique_together = ("movie_session", "row", "seat")
         ordering = ["row", "seat"]
-
-
